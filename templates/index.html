@@ -1,36 +1,29 @@
+<!DOCTYPE html>
 <html>
 
 <head>
     <title>Todo App</title>
-    <style>
-        #error {
-            display: none;
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="../static/style.css" />
 </head>
 
 <body>
-    <h1>Todo App</h1>
-    <form id="form" method="post" action="/todos/create">
-        <input type="text" id="description" name="description" />
-        <input type="submit" value="Create" />
-    </form>
-    <div id="error" class="hidden">Something went wrong!</div>
-    <hr>
-    <ul id="todos">
-        {% for d in data %}
-        <li><input class="check-completed" data-id="{{ d.id }}" type="checkbox" {% if d.completed %} checked
-                {% endif %} />
-            {{ d.description }}
-        </li>
-        {% endfor %}
-    </ul>
+    <section>
+        <h1>Todo App</h1>
+        <form id="form" method="post" action="/todos/create">
+            <input type="text" id="description" name="description" />
+            <input type="submit" value="Create" />
+        </form>
+        <div id="error" class="hidden">Something went wrong!</div>
+        <hr>
+        <ul id="todos">
+            {% for d in data %}
+            <li><input class="check-completed" data-id="{{ d.id }}" type="checkbox" {% if d.completed %} checked
+                    {% endif %} />
+                {{ d.description }}
+            </li>
+            {% endfor %}
+        </ul>
+    </section>
 
     <script>
         const checkboxes = document.querySelectorAll('.check-completed');
