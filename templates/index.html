@@ -17,9 +17,11 @@
         <hr>
         <ul id="todos">
             {% for d in data %}
-            <li><input class="check-completed" data-id="{{ d.id }}" type="checkbox" {% if d.completed %} checked
+            <li>
+                <input class="check-completed" data-id="{{ d.id }}" type="checkbox" {% if d.completed %} checked
                     {% endif %} />
                 {{ d.description }}
+                <button class="delete-button" data-id="{{ d.id }}">&cross;</button>
             </li>
             {% endfor %}
         </ul>
@@ -29,7 +31,7 @@
         const checkboxes = document.querySelectorAll('.check-completed');
         for (let i = 0; i < checkboxes.length; i++) {
             const checkbox = checkboxes[i];
-            checkbox.onchange = function (e) {
+            checkbox.onchange = function(e) {
                 const newCompleted = e.target.checked;
                 const todoId = e.target.dataset['id'];
                 fetch('/todos/' + todoId + '/set-completed', {
@@ -41,15 +43,25 @@
                         'Content-Type': 'application/json'
                     }
                 })
-                    .then(function () {
+                    .then(function() {
                         document.getElementById('error').className = 'hidden';
                     })
-                    .catch(function () {
+                    .catch(function() {
                         document.getElementById('error').className = '';
                     })
             }
         }
-        document.getElementById('form').onsubmit = function (e) {
+        const deleteItem = document.querySelectorAll('.delete-button');
+        for (let i = 0; i < deleteItem.length; i++) {
+            const deleteButton = deleteItem[i];
+            deleteButton.onclick = function(e) {
+                const todoId = e.target.dataset['id'];
+                fetch('/todos/' + todoId, {
+                    method: 'DELETE'
+                });
+            }
+        }
+        document.getElementById('form').onsubmit = function(e) {
             e.preventDefault();
             const desc = descInput.value;
             descInput.value = '';
@@ -76,7 +88,7 @@
                     document.getElementById('todos').appendChild(li);
                     document.getElementById('error').className = 'hidden';
                 })
-                .catch(function () {
+                .catch(function() {
                     document.getElementById('error').className = '';
                 })
         }

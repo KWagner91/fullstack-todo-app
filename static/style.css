@@ -8,6 +8,19 @@ ul {
     margin: 0;
 }
 
+li {
+    clear: both;
+}
+
+li button {
+
+    border: none;
+    outline: hidden;
+    color: red;
+    cursor: pointer;
+    font-size: 20px;
+}
+
 html, body {
     background:
         linear-gradient(purple 0%, blue 90%),
