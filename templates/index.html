@@ -9,22 +9,39 @@
 <body>
     <section>
         <h1>Todo App</h1>
-        <form id="form" method="post" action="/todos/create">
-            <input type="text" id="description" name="description" />
-            <input type="submit" value="Create" />
-        </form>
-        <div id="error" class="hidden">Something went wrong!</div>
-        <hr>
-        <ul id="todos">
-            {% for d in data %}
-            <li>
-                <input class="check-completed" data-id="{{ d.id }}" type="checkbox" {% if d.completed %} checked
-                    {% endif %} />
-                {{ d.description }}
-                <button class="delete-button" data-id="{{ d.id }}">&cross;</button>
-            </li>
-            {% endfor %}
-        </ul>
+
+        <div id="lists-wrapper">
+            <h2>Categories</h2>
+            <ul id="lists">
+                {% for list in lists %}
+                <li>
+                    <a href="/lists/{{ list.id }}">
+                        {{ list.name }}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div id="todos-wrapper">
+            <h2>{{ active_list.name }}</h2>
+            <form id="form" method="post" action="/todos/create">
+                <input type="text" id="description" name="description" />
+                <input type="submit" value="Create" />
+            </form>
+            <div id="error" class="hidden">Something went wrong!</div>
+            <hr>
+            <ul id="todos">
+                {% for todo in todos %}
+                <li>
+                    <input class="check-completed" data-id="{{ todo.id }}" type="checkbox" {% if todo.completed %}
+                        checked {% endif %} />
+                    {{ todo.description }}
+                    <button class="delete-button" data-id="{{ todo.id }}">&cross;</button>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
     </section>
 
     <script>

@@ -45,4 +45,14 @@ section {
     margin: 0 auto;
     border: 1px solid black;
     box-shadow: 0 15px 20px rgba(0, 0, 0, 0.3);
+    text-align:center;
+}
+
+#lists-wrapper,
+#todos-wrapper {
+    display: inline-block;
+    margin: 0 auto;
+    text-align: left;
+    padding: 0 10%;
+    vertical-align: top;
 }
