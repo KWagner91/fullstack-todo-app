@@ -10,14 +10,28 @@ db = SQLAlchemy(app)
 
 migrate = Migrate(app, db)
 
+
 class Todo(db.Model):
     __tablename__ = 'todos'
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String(), nullable=False)
     completed = db.Column(db.Boolean, nullable=False, default=False)
+    list_id = db.Column(db.Integer, db.ForeignKey(
+        'todolists.id'), nullable=False)
 
     def __repr__(self):
         return f'<Todo {self.id} {self.description}>'
+
+
+class TodoList(db.Model):
+    __tablename__ = 'todolists'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(), nullable=False)
+    todos = db.relationship('Todo', backref='list',
+                            cascade='all, delete-orphan')
+
+    def __repr__(self):
+        return f'<TodoList {self.id} {self.name}>'
 
 
 @app.route('/todos/create', methods=['POST'])
@@ -40,6 +54,7 @@ def create_todo():
     if not error:
         return jsonify(body)
 
+
 @app.route('/todos/<todo_id>/set-completed', methods=['POST'])
 def set_completed_todo(todo_id):
     try:
@@ -54,6 +69,7 @@ def set_completed_todo(todo_id):
         db.session.close()
     return redirect(url_for('index'))
 
+
 @app.route('/todos/<todo_id>', methods=['DELETE'])
 def delete_todo(todo_id):
     try:
@@ -63,7 +79,8 @@ def delete_todo(todo_id):
         db.session.rollback()
     finally:
         db.session.close()
-    return jsonify({ 'success': True })
+    return jsonify({'success': True})
+
 
 @app.route('/')
 def index():
