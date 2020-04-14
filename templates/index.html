@@ -11,7 +11,7 @@
         <h1>Todo App</h1>
 
         <div id="lists-wrapper">
-            <h2>Categories</h2>
+            <h3>Categories</h3>
             <ul id="lists">
                 {% for list in lists %}
                 <li>
@@ -24,8 +24,8 @@
         </div>
 
         <div id="todos-wrapper">
-            <h2>{{ active_list.name }}</h2>
-            <form id="form" method="post" action="/todos/create">
+            <h3>{{ active_list.name }}</h3>
+            <form id="form">
                 <input type="text" id="description" name="description" />
                 <input type="submit" value="Create" />
             </form>
@@ -78,11 +78,12 @@
                 });
             }
         }
+        const descInput = document.getElementById('description');
         document.getElementById('form').onsubmit = function(e) {
             e.preventDefault();
             const desc = descInput.value;
             descInput.value = '';
-            fetch('/todos/create', {
+            fetch(window.location.href + '/todos/create', {
                 method: 'POST',
                 body: JSON.stringify({
                     'description': desc,

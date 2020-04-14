@@ -34,16 +34,17 @@ class TodoList(db.Model):
         return f'<TodoList {self.id} {self.name}>'
 
 
-@app.route('/todos/create', methods=['POST'])
-def create_todo():
+@app.route('/lists/<list_id>/todos/create', methods=['POST'])
+def create_todo(list_id):
     error = False
     body = {}
     try:
         req_data = request.get_json()
         description = req_data['description']
-        todo = Todo(description=description)
+        todo = Todo(description=description,  list_id=list_id)
         db.session.add(todo)
         db.session.commit()
+        body['id'] = todo.id
         body['description'] = todo.description
     except:
         error = True
